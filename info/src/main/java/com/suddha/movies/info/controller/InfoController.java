@@ -1,6 +1,7 @@
 package com.suddha.movies.info.controller;
 
 import com.suddha.movies.info.domain.MoviesInfo;
+import com.suddha.movies.info.dto.MovieInfoDTO;
 import com.suddha.movies.info.service.InfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -13,10 +14,9 @@ import reactor.core.publisher.Mono;
 public class InfoController {
 
     @Autowired
-    private InfoService infoService;
-
+    Flux<MoviesInfo> moviesInfoFlux;
     @Autowired
-    private Flux<MoviesInfo> stream;
+    private InfoService infoService;
 
     @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<MoviesInfo> allMovies() {
@@ -25,7 +25,7 @@ public class InfoController {
 
     @GetMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<MoviesInfo> streamMovies() {
-        return stream;
+        return moviesInfoFlux;
     }
 
     @GetMapping("/{id}")
@@ -34,7 +34,7 @@ public class InfoController {
     }
 
     @PostMapping
-    public Mono<MoviesInfo> save(@RequestBody MoviesInfo moviesInfo) {
+    public Mono<MoviesInfo> save(@RequestBody MovieInfoDTO moviesInfo) {
         return infoService.save(Mono.just(moviesInfo));
     }
 
