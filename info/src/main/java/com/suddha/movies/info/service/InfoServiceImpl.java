@@ -1,5 +1,6 @@
 package com.suddha.movies.info.service;
 
+import com.suddha.movies.info.utils.Utils;
 import com.suddha.movies.info.domain.MoviesInfo;
 import com.suddha.movies.info.dto.MovieInfoDTO;
 import com.suddha.movies.info.repository.MoviesInfoRepo;
@@ -9,7 +10,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 
-import static org.springframework.beans.BeanUtils.*;
+import java.util.List;
 
 @Service
 public class InfoServiceImpl implements InfoService {
@@ -32,14 +33,19 @@ public class InfoServiceImpl implements InfoService {
     @Override
     public Mono<MoviesInfo> save(Mono<MovieInfoDTO> movieInfoDTOMono) {
         return movieInfoDTOMono
-                .map(movieInfoDTO -> {
-                    MoviesInfo moviesInfo = new MoviesInfo();
-                    copyProperties(movieInfoDTO,moviesInfo);
-                    return moviesInfo;
-                })
+                .map(Utils::toMovie)
                 .flatMap(moviesInfoRepo::save)
                 .doOnNext(moviesInfoMany::tryEmitNext)
                 .log();
+    }
+
+    @Override
+    public Flux<MovieInfoDTO> findByGenre(List<String> genres) {
+        return moviesInfoRepo
+                .findAll()
+                .filter(moviesInfo ->
+                        moviesInfo.getGenre().containsAll(genres)
+                ).map(Utils::toDTO);
     }
 
 

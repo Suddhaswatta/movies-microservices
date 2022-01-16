@@ -5,6 +5,8 @@ import com.suddha.movies.info.dto.MovieInfoDTO;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 public interface InfoService {
 
     Flux<MoviesInfo> findAll();
@@ -12,5 +14,7 @@ public interface InfoService {
     Mono<MoviesInfo> findById(String id);
 
     Mono<MoviesInfo> save(Mono<MovieInfoDTO> moviesInfo);
+
+    Flux<MovieInfoDTO> findByGenre(List<String> genres);
 
 }

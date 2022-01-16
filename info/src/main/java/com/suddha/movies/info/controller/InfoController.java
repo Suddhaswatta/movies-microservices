@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/${api.name}/${api.version}/${api.resource}")
 public class InfoController {
@@ -38,5 +40,9 @@ public class InfoController {
         return infoService.save(Mono.just(moviesInfo));
     }
 
+    @PostMapping("/genre")
+    public Flux<MovieInfoDTO> findByGenre(@RequestBody List<String> genres) {
+        return infoService.findByGenre(genres);
+    }
 
 }
