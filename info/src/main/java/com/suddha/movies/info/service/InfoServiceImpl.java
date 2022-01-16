@@ -1,5 +1,6 @@
 package com.suddha.movies.info.service;
 
+import com.suddha.movies.info.domain.Genre;
 import com.suddha.movies.info.utils.Utils;
 import com.suddha.movies.info.domain.MoviesInfo;
 import com.suddha.movies.info.dto.MovieInfoDTO;
@@ -40,7 +41,7 @@ public class InfoServiceImpl implements InfoService {
     }
 
     @Override
-    public Flux<MovieInfoDTO> findByGenre(List<String> genres) {
+    public Flux<MovieInfoDTO> findByGenre(List<Genre> genres) {
         return moviesInfoRepo
                 .findAll()
                 .filter(moviesInfo ->

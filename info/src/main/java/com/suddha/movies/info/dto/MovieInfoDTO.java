@@ -1,5 +1,6 @@
 package com.suddha.movies.info.dto;
 
+import com.suddha.movies.info.domain.Genre;
 import lombok.Data;
 
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 public class MovieInfoDTO {
     private String id;
     private String name;
-    private List<String> genre;
+    private List<Genre> genre;
     private Integer releaseYear;
+
 }
