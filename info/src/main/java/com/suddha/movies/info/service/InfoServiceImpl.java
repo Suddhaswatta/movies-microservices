@@ -16,10 +16,14 @@ import java.util.List;
 @Service
 public class InfoServiceImpl implements InfoService {
 
+    private final Sinks.Many<MoviesInfo> moviesInfoMany;
+    private final MoviesInfoRepo moviesInfoRepo;
+
     @Autowired
-    Sinks.Many<MoviesInfo> moviesInfoMany;
-    @Autowired
-    private MoviesInfoRepo moviesInfoRepo;
+    public InfoServiceImpl(Sinks.Many<MoviesInfo> moviesInfoMany, MoviesInfoRepo moviesInfoRepo) {
+        this.moviesInfoMany = moviesInfoMany;
+        this.moviesInfoRepo = moviesInfoRepo;
+    }
 
     @Override
     public Flux<MoviesInfo> findAll() {

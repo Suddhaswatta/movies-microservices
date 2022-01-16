@@ -16,11 +16,18 @@ import java.util.List;
 @RequestMapping("/${api.name}/${api.version}/${api.resource}")
 public class InfoController {
 
-    @Autowired
-    Flux<MoviesInfo> moviesInfoFlux;
+
+    private final Flux<MoviesInfo> moviesInfoFlux;
+
+
+    private final InfoService infoService;
+
 
     @Autowired
-    private InfoService infoService;
+    public InfoController(Flux<MoviesInfo> moviesInfoFlux, InfoService infoService) {
+        this.moviesInfoFlux = moviesInfoFlux;
+        this.infoService = infoService;
+    }
 
     @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<MoviesInfo> allMovies() {
