@@ -14,10 +14,17 @@
     <name>info</name>
     <description>Demo project for Spring Boot</description>
     <properties>
+        <javax-validator.version>2.0.1.Final</javax-validator.version>
         <java.version>11</java.version>
         <spring-cloud.version>2021.0.0</spring-cloud.version>
+        <open-api.version>1.6.2</open-api.version>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>${javax-validator.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
@@ -31,6 +38,11 @@
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-webflux-core</artifactId>
+            <version>${open-api.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
@@ -38,7 +50,7 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-webflux-ui</artifactId>
-            <version>1.6.2</version>
+            <version>${open-api.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
