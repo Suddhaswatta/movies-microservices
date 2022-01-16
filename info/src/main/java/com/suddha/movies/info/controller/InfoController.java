@@ -43,7 +43,7 @@ public class InfoController {
     }
 
     @GetMapping
-    public Flux<MovieInfoDTO> findByGenre(@RequestParam(value = "genres", required = false) List<Genre> genres) {
+    public Flux<MovieInfoDTO> findByGenre(@RequestParam(value = "genres", required = false,defaultValue = "") List<Genre> genres) {
         return infoService.findByGenre(genres);
     }
 
