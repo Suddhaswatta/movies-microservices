@@ -1,5 +1,6 @@
 package com.suddha.movies.info.controller;
 
+import com.suddha.movies.info.domain.Genre;
 import com.suddha.movies.info.domain.MoviesInfo;
 import com.suddha.movies.info.dto.MovieInfoDTO;
 import com.suddha.movies.info.service.InfoService;
@@ -17,6 +18,7 @@ public class InfoController {
 
     @Autowired
     Flux<MoviesInfo> moviesInfoFlux;
+
     @Autowired
     private InfoService infoService;
 
@@ -40,8 +42,8 @@ public class InfoController {
         return infoService.save(Mono.just(moviesInfo));
     }
 
-    @PostMapping("/genre")
-    public Flux<MovieInfoDTO> findByGenre(@RequestBody List<String> genres) {
+    @GetMapping
+    public Flux<MovieInfoDTO> findByGenre(@RequestParam(value = "genres", required = false) List<Genre> genres) {
         return infoService.findByGenre(genres);
     }
 

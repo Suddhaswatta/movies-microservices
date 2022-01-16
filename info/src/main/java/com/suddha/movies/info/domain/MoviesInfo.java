@@ -17,6 +17,6 @@ public class MoviesInfo {
     @Id
     private String id;
     private String name;
-    private List<String> genre;
+    private List<Genre> genre;
     private Integer releaseYear;
 }
