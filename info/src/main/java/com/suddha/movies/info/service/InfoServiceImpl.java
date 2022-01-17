@@ -2,7 +2,6 @@ package com.suddha.movies.info.service;
 
 import com.suddha.movies.info.domain.Genre;
 import com.suddha.movies.info.utils.Utils;
-import com.suddha.movies.info.domain.MoviesInfo;
 import com.suddha.movies.info.dto.MovieInfoDTO;
 import com.suddha.movies.info.repository.MoviesInfoRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,30 +15,31 @@ import java.util.List;
 @Service
 public class InfoServiceImpl implements InfoService {
 
-    private final Sinks.Many<MoviesInfo> moviesInfoMany;
+    private final Sinks.Many<MovieInfoDTO> moviesInfoMany;
     private final MoviesInfoRepo moviesInfoRepo;
 
     @Autowired
-    public InfoServiceImpl(Sinks.Many<MoviesInfo> moviesInfoMany, MoviesInfoRepo moviesInfoRepo) {
+    public InfoServiceImpl(Sinks.Many<MovieInfoDTO> moviesInfoMany, MoviesInfoRepo moviesInfoRepo) {
         this.moviesInfoMany = moviesInfoMany;
         this.moviesInfoRepo = moviesInfoRepo;
     }
 
     @Override
-    public Flux<MoviesInfo> findAll() {
-        return moviesInfoRepo.findAll().log();
+    public Flux<MovieInfoDTO> findAll() {
+        return moviesInfoRepo.findAll().map(Utils::toDTO).log();
     }
 
     @Override
-    public Mono<MoviesInfo> findById(String id) {
-        return moviesInfoRepo.findById(id).log();
+    public Mono<MovieInfoDTO> findById(String id) {
+        return moviesInfoRepo.findById(id).map(Utils::toDTO).log();
     }
 
     @Override
-    public Mono<MoviesInfo> save(Mono<MovieInfoDTO> movieInfoDTOMono) {
+    public Mono<MovieInfoDTO> save(Mono<MovieInfoDTO> movieInfoDTOMono) {
         return movieInfoDTOMono
                 .map(Utils::toMovie)
                 .flatMap(moviesInfoRepo::save)
+                .map(Utils::toDTO)
                 .doOnNext(moviesInfoMany::tryEmitNext)
                 .log();
     }
