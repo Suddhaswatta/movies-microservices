@@ -17,7 +17,8 @@ public class MovieInfoDTO {
     @Size(min = 2, max = 24, message = "Movie name must have minimum of 2 characters and maximum of 24 characters")
     private String name;
 
-    private List<@NotEmpty(message = "Movie genre cannot be empty") Genre> genre;
+    @NotEmpty
+    private List<@NotBlank(message = "Movie genre cannot be empty") Genre> genre;
 
     @Min(value = 1900, message = "Release year must be greater than 1900")
     private Integer releaseYear;
