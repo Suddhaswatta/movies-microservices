@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 
 import javax.validation.ConstraintViolation;
@@ -23,9 +22,7 @@ import java.util.Set;
 @Slf4j
 public class InfoController {
 
-
     private final Flux<MovieInfoDTO> moviesInfoFlux;
-
     private final InfoService infoService;
 
     @Autowired
@@ -34,7 +31,6 @@ public class InfoController {
         this.infoService = infoService;
     }
 
-
     @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<MovieInfoDTO> allMovies() {
         return infoService.findAll();
@@ -42,15 +38,12 @@ public class InfoController {
 
     @GetMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<MovieInfoDTO> streamMovies() {
-
-        return  Flux.interval(Duration.ofSeconds(5))
-                        .flatMap(ignore -> infoService.findAll().delayElements(Duration.ofSeconds(1)));
-
+        return Flux.interval(Duration.ofSeconds(5))
+                .flatMap(ignore -> infoService.findAll().delayElements(Duration.ofSeconds(1)));
     }
 
     @GetMapping(value = "/stream/updates", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<MovieInfoDTO> streamMoviesUpdates() {
-
         return moviesInfoFlux;
     }
 
@@ -73,6 +66,5 @@ public class InfoController {
     public Flux<MovieInfoDTO> findByGenre(@RequestParam(value = "genres", required = false, defaultValue = "") List<Genre> genres) {
         return infoService.findByGenre(genres);
     }
-
 
 }
