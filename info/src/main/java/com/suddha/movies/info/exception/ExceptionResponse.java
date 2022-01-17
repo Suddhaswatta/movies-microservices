@@ -3,11 +3,15 @@ package com.suddha.movies.info.exception;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Map;
 
 @Data
-public class ExceptionResponse  {
+public class ExceptionResponse {
 
-    private List<String> errorMessages;
-    private Date errorDate;
+    private Map<String, String> errorMessages;
+    private Date errorTime = new Date();
+
+    public ExceptionResponse(Map<String, String> errorMessages) {
+        this.errorMessages = errorMessages;
+    }
 }

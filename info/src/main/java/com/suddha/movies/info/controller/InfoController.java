@@ -10,12 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
+import javax.validation.Valid;
 import java.time.Duration;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/${api.name}/${api.version}/${api.resource}")
@@ -39,7 +36,7 @@ public class InfoController {
     @GetMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<MovieInfoDTO> streamMovies() {
         return Flux.interval(Duration.ofSeconds(5))
-                .flatMap(ignore -> infoService.findAll().delayElements(Duration.ofSeconds(1)));
+                .flatMap(ignore -> infoService.findAll());
     }
 
     @GetMapping(value = "/stream/updates", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
@@ -53,12 +50,7 @@ public class InfoController {
     }
 
     @PostMapping
-    public Mono<MovieInfoDTO> save(@RequestBody MovieInfoDTO moviesInfo) {
-        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-        Set<ConstraintViolation<MovieInfoDTO>> violations = validator.validate(moviesInfo);
-        for (ConstraintViolation<MovieInfoDTO> violation : violations) {
-            log.error(violation.getMessage());
-        }
+    public Mono<MovieInfoDTO> save(@RequestBody @Valid MovieInfoDTO moviesInfo) {
         return infoService.save(Mono.just(moviesInfo));
     }
 

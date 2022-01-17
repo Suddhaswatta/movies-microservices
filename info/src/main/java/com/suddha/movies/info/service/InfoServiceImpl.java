@@ -1,9 +1,9 @@
 package com.suddha.movies.info.service;
 
 import com.suddha.movies.info.domain.Genre;
-import com.suddha.movies.info.utils.Utils;
 import com.suddha.movies.info.dto.MovieInfoDTO;
 import com.suddha.movies.info.repository.MoviesInfoRepo;
+import com.suddha.movies.info.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -43,6 +43,7 @@ public class InfoServiceImpl implements InfoService {
                 .doOnNext(moviesInfoMany::tryEmitNext)
                 .log();
     }
+
 
     @Override
     public Flux<MovieInfoDTO> findByGenre(List<Genre> genres) {
