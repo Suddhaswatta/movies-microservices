@@ -54,11 +54,16 @@ public class InfoServiceImpl implements InfoService {
 
     @Override
     public Flux<MovieInfoDTO> findByGenre(List<Genre> genres) {
-        return moviesInfoRepo
-                .findAll()
-                .filter(moviesInfo ->
-                        moviesInfo.getGenre().containsAll(genres)
-                ).map(Utils::toDTO);
+
+        return Mono
+                .just(genres)
+                .flatMapMany
+                        (genresList -> moviesInfoRepo
+                                .findAll()
+                                .filter(moviesInfo -> moviesInfo.getGenre()
+                                        .containsAll(genresList))
+                        ).map(Utils::toDTO)
+                .log();
     }
 
 
