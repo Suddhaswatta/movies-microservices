@@ -18,7 +18,7 @@ public class MovieInfoDTO {
     private String name;
 
     @NotEmpty
-    private List<@NotBlank(message = "Movie genre cannot be empty") Genre> genre;
+    private List<Genre> genre;
 
     @Min(value = 1900, message = "Release year must be greater than 1900")
     private Integer releaseYear;
