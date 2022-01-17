@@ -43,9 +43,10 @@ public class InfoController {
     @GetMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<MovieInfoDTO> streamMovies() {
 
-        return Flux.create((FluxSink<MovieInfoDTO> fluxSink) -> Flux.interval(Duration.ofSeconds(15))
-                .flatMap(ignore -> infoService.findAll().doOnNext(fluxSink::next))
-                .subscribe()).delayElements(Duration.ofSeconds(1));
+        return Flux.create((FluxSink<MovieInfoDTO> fluxSink) ->
+                Flux.interval(Duration.ofSeconds(5))
+                        .flatMap(ignore -> infoService.findAll().doOnNext(fluxSink::next))
+                        .subscribe()).delayElements(Duration.ofSeconds(1));
     }
 
     @GetMapping(value = "/stream/updates", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
