@@ -4,6 +4,7 @@ import com.suddha.movies.info.domain.Genre;
 import com.suddha.movies.info.dto.MovieInfoDTO;
 import com.suddha.movies.info.repository.MoviesInfoRepo;
 import com.suddha.movies.info.utils.Utils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -13,6 +14,7 @@ import reactor.core.publisher.Sinks;
 import java.util.List;
 
 @Service
+@Slf4j
 public class InfoServiceImpl implements InfoService {
 
     private final Sinks.Many<MovieInfoDTO> moviesInfoMany;
@@ -31,7 +33,12 @@ public class InfoServiceImpl implements InfoService {
 
     @Override
     public Mono<MovieInfoDTO> findById(String id) {
-        return moviesInfoRepo.findById(id).map(Utils::toDTO).log();
+
+        return Mono.fromSupplier(() -> id)
+                .flatMap(moviesInfoRepo::findById)
+                .map(Utils::toDTO)
+                .doOnNext(movieInfoDTO -> log.debug("Found Movie:{} by id : {}", movieInfoDTO, id))
+                .log();
     }
 
     @Override
