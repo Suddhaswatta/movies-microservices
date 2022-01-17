@@ -35,8 +35,7 @@ public class InfoController {
 
     @GetMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<MovieInfoDTO> streamMovies() {
-        return Flux.interval(Duration.ofSeconds(5))
-                .flatMap(ignore -> infoService.findAll());
+        return Flux.interval(Duration.ofSeconds(5)).flatMap(ignore -> infoService.findAll());
     }
 
     @GetMapping(value = "/stream/updates", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
