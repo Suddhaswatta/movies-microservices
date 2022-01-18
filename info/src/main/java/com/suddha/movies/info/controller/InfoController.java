@@ -48,6 +48,12 @@ public class InfoController {
         return infoService.findById(id);
     }
 
+
+    @GetMapping("/{releaseYear}")
+    public Flux<MovieInfoDTO> moviesByReleaseYear(@PathVariable Integer releaseYear) {
+        return infoService.findByReleaseYear(releaseYear);
+    }
+
     @PostMapping
     public Mono<MovieInfoDTO> save(@RequestBody @Valid MovieInfoDTO moviesInfo) {
         return infoService.save(Mono.just(moviesInfo));

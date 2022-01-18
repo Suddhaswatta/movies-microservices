@@ -3,7 +3,7 @@ package com.suddha.movies.info.service;
 import com.suddha.movies.info.domain.Genre;
 import com.suddha.movies.info.dto.MovieInfoDTO;
 import com.suddha.movies.info.repository.MoviesInfoRepo;
-import com.suddha.movies.info.utils.Utils;
+import com.suddha.movies.info.utils.DataUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ public class InfoServiceImpl implements InfoService {
 
     @Override
     public Flux<MovieInfoDTO> findAll() {
-        return moviesInfoRepo.findAll().map(Utils::toDTO).log();
+        return moviesInfoRepo.findAll().map(DataUtils::toDTO).log();
     }
 
     @Override
@@ -36,7 +36,7 @@ public class InfoServiceImpl implements InfoService {
 
         return Mono.fromSupplier(() -> id)
                 .flatMap(moviesInfoRepo::findById)
-                .map(Utils::toDTO)
+                .map(DataUtils::toDTO)
                 .doOnNext(movieInfoDTO -> log.debug("Found Movie:{} by id : {}", movieInfoDTO, id))
                 .log();
     }
@@ -44,9 +44,9 @@ public class InfoServiceImpl implements InfoService {
     @Override
     public Mono<MovieInfoDTO> save(Mono<MovieInfoDTO> movieInfoDTOMono) {
         return movieInfoDTOMono
-                .map(Utils::toMovie)
+                .map(DataUtils::toMovie)
                 .flatMap(moviesInfoRepo::save)
-                .map(Utils::toDTO)
+                .map(DataUtils::toDTO)
                 .doOnNext(moviesInfoMany::tryEmitNext)
                 .log();
     }
@@ -62,8 +62,15 @@ public class InfoServiceImpl implements InfoService {
                                 .findAll()
                                 .filter(moviesInfo -> moviesInfo.getGenre()
                                         .containsAll(genresList))
-                        ).map(Utils::toDTO)
+                        ).map(DataUtils::toDTO)
                 .log();
+    }
+
+    @Override
+    public Flux<MovieInfoDTO> findByReleaseYear(Integer year) {
+        return Mono.fromSupplier(() -> year)
+                .flatMapMany(moviesInfoRepo::findByReleaseYear)
+                .map(DataUtils::toDTO);
     }
 
 

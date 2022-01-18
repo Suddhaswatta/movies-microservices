@@ -5,9 +5,9 @@ import com.suddha.movies.info.dto.MovieInfoDTO;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
 
-public class Utils {
+public class DataUtils {
 
-    private Utils() {
+    private DataUtils() {
     }
 
     public static MoviesInfo toMovie(MovieInfoDTO movieInfoDTO) {
